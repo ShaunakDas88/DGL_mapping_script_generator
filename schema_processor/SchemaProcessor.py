@@ -44,7 +44,7 @@ class SchemaProcessor():
 					break
 			# at this point, we should be left with only the type for our propertyKey
 			if len(pieces) == 1:
-				self.propertykey_map[curr_key]["type"] = pieces[0]
+				self.propertykey_map[curr_key]["type"] = pieces[0].split("(")[0].strip()
 			else:
 				print "We have not fully processed the entirety of line, in order to now infer element type: {l}."
 				exit()
@@ -60,8 +60,8 @@ class SchemaProcessor():
 			# time to fill up our vertex dict
 			for piece in pieces:
 				# dealing with a custom id key
-				if piece.startswith("partition("):
-					self.vertexlabel_map[curr_label]["propertykeys"] = [k.strip().strip("\"").strip("'").strip() for k in piece.split("(")[1].split(")")[0].split(",")]
+				if piece.startswith("partitionKey("):
+					self.vertexlabel_map[curr_label]["custom_id_key"] = piece.split("(")[1].split(")")[0].strip().strip("\"").strip("'").strip()
 				# dealing with propertykeys
 				if piece.startswith("properties("):
 					self.vertexlabel_map[curr_label]["propertykeys"] = [k.strip().strip("\"").strip("'").strip() for k in piece.split("(")[1].split(")")[0].split(",")]
@@ -75,7 +75,8 @@ class SchemaProcessor():
 			for piece in pieces:
 				# dealing with custom id
 				if piece.startswith("partition("):
-					self.edgelabel_map[curr_label]["propertykeys"] = [k.strip().strip("\"").strip("'").strip() for k in piece.split("(")[1].split(")")[0].split(",")]
+					# QUESTION: worry about other keys for custom ids
+					self.edgelabel_map[curr_label]["custom_id_key"] = piece.split("(")[1].split(")")[0].strip().strip("\"").strip("'").strip()
 				# dealing with propertykeys
 				if piece.startswith("properties("):
 					self.edgelabel_map[curr_label]["propertykeys"] = [k.strip().strip("\"").strip("'").strip() for k in piece.split("(")[1].split(")")[0].split(",")]
@@ -91,9 +92,6 @@ class SchemaProcessor():
 					if not self.vertexlabel_map[from_to_list[1]]["in"]:
 						self.vertexlabel_map[from_to_list[1]]["in"] = []
                                         self.vertexlabel_map[from_to_list[1]]["in"].append({"edgelabel": curr_label, "vertexlabel": from_to_list[0]})
-#		from pprint import pprint
-#		pprint(self.vertexlabel_map)
-#		pprint(self.edgelabel_map)
 
 	def separate_schema_lines(self):
 		schema_file = open(self.schema_file_path, "r")

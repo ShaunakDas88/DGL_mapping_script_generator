@@ -15,5 +15,5 @@ if not options.schema_file_path:
 
 schema_processor = SchemaProcessor(options.schema_file_path)
 propertykey_map, vertexlabel_map, edgelabel_map = schema_processor.build_schema_maps()
-mapper_generator = MapperGenerator(options.mapping_script_file, vertexlabel_map, edgelabel_map)
+mapper_generator = MapperGenerator(options.mapping_script_file, vertexlabel_map, edgelabel_map, propertykey_map)
 mapper_generator.generate_mapping_script()
