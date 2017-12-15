@@ -106,6 +106,6 @@ class MapperGenerator():
 		self.create_count_variables()
 		self.create_vertex_data_generators()
 		self.create_vertex_loaders()
-		#self.create_edge_data_generators()
-		#self.create_edge_loaders()
+		self.create_edge_data_generators()
+		self.create_edge_loaders()
 		self.mapper_file.close()

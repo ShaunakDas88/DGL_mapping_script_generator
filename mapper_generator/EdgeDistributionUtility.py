@@ -1,7 +1,11 @@
-class EdgeDistributionUtility():
+from PropertyKeysGenerator import PropertyKeysGenerator
 
-#	@classmethod
-#	def __init__(cls):
+class EdgeDistributionUtility():
+	propertykeys_generator = None
+
+	@classmethod
+	def __init__(cls, propertykeys_map):
+		cls.propertykeys_generator = PropertyKeysGenerator(propertykeys_map)
 
 	def create_point_mass_distribution(self, edgelabel, edgelabel_map):
 		"""
