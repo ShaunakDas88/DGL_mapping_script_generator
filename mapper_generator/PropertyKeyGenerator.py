@@ -5,12 +5,16 @@ class PropertyKeyGenerator():
 	@classmethod
 	def __init__(cls, propertykey_map):
 		cls.propertykey_map = propertykey_map
-		cls.propertykey_type_map = {"Text": "toString()", "Integer": "toInteger()", "Double": "toDouble()", "Float": "toFloat()"}
+		cls.propertykey_type_map = {	"Text" : "toString()", 
+						"Int" : "toInteger()", 
+						"Double" : "toDouble()", 
+						"Float" : "toFloat()",
+						"Timestamp" : "toInteger()"}	# need to figure something out for this
 
-	def generate_propertykey(self, propertykey):
+	def generate_propertykey(self, propertykey, prefix="it"):
 		groovy = None
 		prop_type = self.propertykey_map[propertykey]["type"]
-		groovy = "it.{c}".format(c=self.propertykey_type_map[prop_type])
+		groovy = "{p}.{c}".format(p=prefix, c=self.propertykey_type_map[prop_type])
 		# TO DO: handle more exotic types (e.g. Date)
 		# handle multiple cardinality
 		if self.propertykey_map[propertykey]["cardinality"] == "multiple":

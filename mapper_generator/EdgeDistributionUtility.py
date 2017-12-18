@@ -43,15 +43,14 @@ class EdgeDistributionUtility():
 		groovy += "\n\tfor (int i : neighbours_numeric) {"
 		groovy += "\n\t\tneighbours << i.{c}".format(c=self.propertykey_generator.propertykey_type_map[to_label_id_type])
 		groovy += "\n\t}"
-		groovy += "\n\t[\"out\": {o}, \"neighbours\": neighbours]".format(o=from_v_groovy)
+		groovy += "\n\t["
+		groovy += "\n\t\t\"out\" : {o}, ".format(o=from_v_groovy)
+		groovy += "\n\t\t\"neighbours\" : neighbours,"
+		# need this 'index' field for generating propertyKeys for the edge
+		groovy += "\n\t\t\"index\" : it"
+		groovy += "\n\t]"
 		groovy += "\n}"
-		groovy += "\n.count(" + num_v + ").flatMap {"
-		groovy += "\n\toutVertex = it[\"out\"]"
-		groovy += "\n\tit[\"neighbours\"].collect {"
-		groovy += "\n\t\tinVertex=it"
-		groovy += "\n\t\tit = [\"out\": outVertex, \"in\": inVertex]"
-		groovy += "\n\t}"
-		groovy += "\n}"
+		groovy += "\n.count(" + num_v + ")"
 		return groovy
 
 	def create_uniform_distribution(vertexlabel_map, edgelabel_map, lower, upper):
