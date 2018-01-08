@@ -23,12 +23,10 @@ class EdgeGenerator():
 			if distribution.lower() == "point_mass":
 				edge_degree_groovy, groovy_vars = self.edge_distribution_utility.create_point_mass_distribution(edgelabel, self.edgelabel_map)
 				groovy += edge_degree_groovy
-				print groovy_vars
 				groovy_variables += groovy_vars
 			if distribution.lower() == "power":
 				edge_degree_groovy, groovy_vars = self.edge_distribution_utility.create_power_law_distribution(edgelabel, self.edgelabel_map)
 				groovy += edge_degree_groovy
-				print groovy_vars
 				groovy_variables += groovy_vars
 			# if distribution.lower() is "gaussian":
 				# groovy += self.edge_distribution_utility.create
