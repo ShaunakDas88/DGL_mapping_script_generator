@@ -1,7 +1,7 @@
 import json
 from optparse import OptionParser
 from schema_processor.SchemaProcessor import SchemaProcessor
-from mapper_generator.MapperGenerator import MapperGenerator
+from element_generator.MapperGenerator import MapperGenerator
 
 parser = OptionParser()
 parser.add_option("--schema_file_path", dest="schema_file_path", help="Where the schema file is located")
@@ -15,5 +15,5 @@ if not options.schema_file_path:
 
 schema_processor = SchemaProcessor(options.schema_file_path)
 propertykey_map, vertexlabel_map, edgelabel_map = schema_processor.build_schema_maps()
-mapper_generator = MapperGenerator(options.mapping_script_file, vertexlabel_map, edgelabel_map, propertykey_map)
+mapper_generator = MapperGenerator(options.mapping_script_file, vertexlabel_map, edgelabel_map, propertykey_map, options.edge_distribution)
 mapper_generator.generate_mapping_script()

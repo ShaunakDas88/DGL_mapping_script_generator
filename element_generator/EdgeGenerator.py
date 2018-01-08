@@ -14,10 +14,24 @@ class EdgeGenerator():
 		cls.edge_distribution_utility = EdgeDistributionUtility(propertykey_map, vertexlabel_map)
 		cls.propertykey_generator = PropertyKeyGenerator(propertykey_map)
 
-	def create_edge_data_generators(self):
+	def create_edge_data_generators(self, distribution):
 		groovy = "// Data generation for different edges\n"
+		groovy_variables = []
+		# iterate through each edgeLabel of our schema
 		for edgelabel in self.edgelabel_map:
-			groovy += self.edge_distribution_utility.create_point_mass_distribution(edgelabel, self.edgelabel_map)
+			# determine the edge distribution to use
+			if distribution.lower() == "point_mass":
+				edge_degree_groovy, groovy_vars = self.edge_distribution_utility.create_point_mass_distribution(edgelabel, self.edgelabel_map)
+				groovy += edge_degree_groovy
+				print groovy_vars
+				groovy_variables += groovy_vars
+			if distribution.lower() == "power":
+				edge_degree_groovy, groovy_vars = self.edge_distribution_utility.create_power_law_distribution(edgelabel, self.edgelabel_map)
+				groovy += edge_degree_groovy
+				print groovy_vars
+				groovy_variables += groovy_vars
+			# if distribution.lower() is "gaussian":
+				# groovy += self.edge_distribution_utility.create
 			# add in propertyKeys
 			groovy += "\n.flatMap {"
 			groovy += "\n\toutVertex = it[\"out\"]"
@@ -38,7 +52,7 @@ class EdgeGenerator():
 			groovy = groovy[:-1] + "\n\t\t]"
 			groovy += "\n\t}"
 			groovy += "\n}\n\n"
-		return groovy
+		return groovy, groovy_variables
 
 	def create_edge_loaders(self):
 		groovy = "// Loading of edge data\n"
@@ -47,7 +61,7 @@ class EdgeGenerator():
 			to_label = self.edgelabel_map[edgelabel]["to"]
 			from_label_id = self.vertexlabel_map[from_label]["custom_id_key"]
 			to_label_id = self.vertexlabel_map[to_label]["custom_id_key"]
-			groovy += 'load(' + edgelabel + '_e).asEdges {'
+			groovy += 'load(' + edgelabel.lower() + '_e).asEdges {'
 			groovy += '\n\tlabel "' + edgelabel + '"'
 			groovy += '\n\toutV "out", {'
 			groovy += '\n\t\tlabel "{l}"'.format(l=from_label)

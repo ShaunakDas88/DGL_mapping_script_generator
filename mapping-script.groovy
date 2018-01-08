@@ -45,10 +45,12 @@ load(Customer_v).asVertices {
 }
 
 // Data generation for different edges
-num_belongs_in_category_edges = Integer.valueOf(num_belongs_in_category_edges)
+belongs_in_category_coefficient = Integer.valueOf(belongs_in_category_coefficient)
+belongs_in_category_decay_constant = Integer.valueOf(belongs_in_category_decay_constant)
 
 belongs_in_category_e = Generator.of {
 	def neighbours_numeric = []
+	def num_belongs_in_category_edges = belongs_in_category_coefficient*(it+1).power(-belongs_in_category_decay_constant).intValue()
 	for (int i = 1; i <= num_belongs_in_category_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Category_vertices)
 	}
@@ -77,10 +79,12 @@ belongs_in_category_e = Generator.of {
 	}
 }
 
-num_purchased_with_edges = Integer.valueOf(num_purchased_with_edges)
+purchased_with_coefficient = Integer.valueOf(purchased_with_coefficient)
+purchased_with_decay_constant = Integer.valueOf(purchased_with_decay_constant)
 
 purchased_with_e = Generator.of {
 	def neighbours_numeric = []
+	def num_purchased_with_edges = purchased_with_coefficient*(it+1).power(-purchased_with_decay_constant).intValue()
 	for (int i = 1; i <= num_purchased_with_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Item_vertices)
 	}
@@ -109,10 +113,12 @@ purchased_with_e = Generator.of {
 	}
 }
 
-num_bought_after_viewing_edges = Integer.valueOf(num_bought_after_viewing_edges)
+bought_after_viewing_coefficient = Integer.valueOf(bought_after_viewing_coefficient)
+bought_after_viewing_decay_constant = Integer.valueOf(bought_after_viewing_decay_constant)
 
 bought_after_viewing_e = Generator.of {
 	def neighbours_numeric = []
+	def num_bought_after_viewing_edges = bought_after_viewing_coefficient*(it+1).power(-bought_after_viewing_decay_constant).intValue()
 	for (int i = 1; i <= num_bought_after_viewing_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Item_vertices)
 	}
@@ -141,10 +147,12 @@ bought_after_viewing_e = Generator.of {
 	}
 }
 
-num_reviewed_edges = Integer.valueOf(num_reviewed_edges)
+reviewed_coefficient = Integer.valueOf(reviewed_coefficient)
+reviewed_decay_constant = Integer.valueOf(reviewed_decay_constant)
 
 reviewed_e = Generator.of {
 	def neighbours_numeric = []
+	def num_reviewed_edges = reviewed_coefficient*(it+1).power(-reviewed_decay_constant).intValue()
 	for (int i = 1; i <= num_reviewed_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Item_vertices)
 	}
@@ -179,10 +187,12 @@ reviewed_e = Generator.of {
 	}
 }
 
-num_also_bought_edges = Integer.valueOf(num_also_bought_edges)
+also_bought_coefficient = Integer.valueOf(also_bought_coefficient)
+also_bought_decay_constant = Integer.valueOf(also_bought_decay_constant)
 
 also_bought_e = Generator.of {
 	def neighbours_numeric = []
+	def num_also_bought_edges = also_bought_coefficient*(it+1).power(-also_bought_decay_constant).intValue()
 	for (int i = 1; i <= num_also_bought_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Item_vertices)
 	}
@@ -211,10 +221,12 @@ also_bought_e = Generator.of {
 	}
 }
 
-num_viewed_with_edges = Integer.valueOf(num_viewed_with_edges)
+viewed_with_coefficient = Integer.valueOf(viewed_with_coefficient)
+viewed_with_decay_constant = Integer.valueOf(viewed_with_decay_constant)
 
 viewed_with_e = Generator.of {
 	def neighbours_numeric = []
+	def num_viewed_with_edges = viewed_with_coefficient*(it+1).power(-viewed_with_decay_constant).intValue()
 	for (int i = 1; i <= num_viewed_with_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Item_vertices)
 	}
@@ -243,11 +255,13 @@ viewed_with_e = Generator.of {
 	}
 }
 
-num_has_salesRank_edges = Integer.valueOf(num_has_salesrank_edges)
+has_salesrank_coefficient = Integer.valueOf(has_salesrank_coefficient)
+has_salesrank_decay_constant = Integer.valueOf(has_salesrank_decay_constant)
 
 has_salesRank_e = Generator.of {
 	def neighbours_numeric = []
-	for (int i = 1; i <= num_has_salesRank_edges; i++) {
+	def num_has_salesrank_edges = has_salesrank_coefficient*(it+1).power(-has_salesrank_decay_constant).intValue()
+	for (int i = 1; i <= num_has_salesrank_edges; i++) {
 		neighbours_numeric << ((it+i)%num_Category_vertices)
 	}
 	def neighbours = []

@@ -13,19 +13,21 @@ class VertexGenerator():
 
 	def create_vertex_count_variables(self):
 		groovy = "// Define vertex count variables\n"
+		groovy_variables = []
 		for vertexlabel in self.vertexlabel_map:
-			curr_variable = "num_{l}_vertices".format(l=vertexlabel)
+			curr_variable = "num_{l}_vertices".format(l=vertexlabel.lower())
+			groovy_variables.append(curr_variable)
 			self.vertex_count_variable_map[vertexlabel] = curr_variable
-			groovy += "{x} = Integer.valueOf({y})\n".format(x=curr_variable, y=curr_variable.lower())
+			groovy += "{y} = Integer.valueOf({y})\n".format(y=curr_variable)
 		# write count variables to mapping script
 		groovy += "\n"
-		return groovy
+		return groovy, groovy_variables
 
 	def create_vertex_data_generators(self):
 		groovy = "// Data generation for different vertices\n"
 		for vertexlabel in self.vertexlabel_map:
 			custom_id = False
-			n = "num_" + vertexlabel + "_vertices"
+			n = "num_" + vertexlabel.lower() + "_vertices"
 			# start the string for data generation
 			groovy += vertexlabel + "_v = Generator.of {"
 			# generate custom ids and propertykeys
