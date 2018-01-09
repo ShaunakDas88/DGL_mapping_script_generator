@@ -88,16 +88,16 @@ class EdgeDistributionUtility():
 
 		return groovy_string
 		"""
-		num_v = "num_" + edgelabel_map[edgelabel]["to"] + "_vertices"
-		edge_degree_coefficient = "{e}_coefficient".format(e-edgelabel.lower())
+		num_v = "num_" + edgelabel_map[edgelabel]["to"].lower() + "_vertices"
+		edge_degree_coefficient = "{e}_coefficient".format(e=edgelabel.lower())
 		edge_degree_decay_constant = "{e}_decay_constant".format(e=edgelabel.lower())
 		# these are variables in the groovy script that the user will need to specify on the command line 
-		groovy_variables = [num_v, edge_degree_coefficient, degree_decay_constant]
+		groovy_variables = [edge_degree_coefficient, edge_degree_decay_constant]
 		groovy = "{e} = Integer.valueOf({e})".format(e=edge_degree_coefficient)
 		groovy += "\n{e} = Integer.valueOf({e})".format(e=edge_degree_decay_constant)
-		groovy += "\n\n" + edgelabel + "_e = Generator.of {"
+		groovy += "\n\n" + edgelabel.lower() + "_e = Generator.of {"
 		groovy += "\n\tdef neighbours_numeric = []"
-		groovy += "\n\tdef num_{e}_edges = {e}_coefficient*(it+1).power(-{e}_decay_constant).intValue()".format(e=edgelabel.lower())
+		groovy += "\n\tdef num_{e}_edges = ({e}_coefficient/(it+1).power({e}_decay_constant)).intValue()".format(e=edgelabel.lower())
 		# want to handle variable names
 		groovy += "\n\tfor (int i = 1; i <= " + "num_{e}_edges".format(e=edgelabel.lower()) + "; i++) {"
 		groovy += "\n\t\tneighbours_numeric << ((it+i)%{l})".format(l=num_v)
